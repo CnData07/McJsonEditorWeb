@@ -27,13 +27,22 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
     - run: yarn
-    - run: yarn build
-    - run: |  
-        cp -r ./dist/* .
+    - run: yarn build  
+  
+    - name: Deploy to GitHub Pages  
+      run: |  
+        # 切换到gh-pages分支，如果不存在则创建它  
+        git fetch origin  
+        git checkout -b gh-pages origin/gh-pages || git checkout gh-pages  
+        # 删除旧的文件（除了.git文件夹）  
+        find . ! -name '.git' -type d -exec rm -r '{}' + && find . ! -name '.git' -type f -exec rm '{}' +  
+        # 从构建目录中复制文件到当前目录  
+        cp -r ./dist/* .  
+        # 添加所有更改到Git  
         git add .  
-   
-    # 提交更改  
-    - run: |  
-        git config --local user.name "Data07"  
-        git config --local user.email "data07@126.com"  
+        # 提交更改，如果构建产物没有变化，则此提交将是空的，不会影响仓库  
         git commit -m "Deploy to GitHub Pages"  
+        # 推送更改到gh-pages分支，强制推送以覆盖历史记录（如果需要保留历史，请去掉--force）  
+        git push --force origin gh-pages  
+       # 只在main分支上运行时执行部署步骤  
+      if: github.ref == 'refs/heads/main'
