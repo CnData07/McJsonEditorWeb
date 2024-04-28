@@ -1,6 +1,7 @@
 <!-- MyTextarea.vue -->
 <template>
     <textarea class="mc-textarea" :value="initialValue" @input="updateValue"></textarea>
+    
 </template>
 
 <script setup>
