@@ -15,9 +15,6 @@ const input = (e) => {
     emit('update:modelValue', e.target.value);
 }
 
-
-
-
 </script>
 
 <style lang="scss" scoped>

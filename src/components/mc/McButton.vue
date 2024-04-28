@@ -6,7 +6,6 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from 'vue'
 
 defineProps({
     type: {
