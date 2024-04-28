@@ -60,7 +60,7 @@ button {
         left: 0;
         width: 100%;
         height: 100%;
-        border: 2px black solid;
+        border: 2px var(--mc-color-black) solid;
     }
 
     .li {
@@ -83,8 +83,8 @@ button {
     background-color: var(--mc-color-def);
 }
 
-.black::after {
-    background-color: var(--mc-color-black);
+.dark::after {
+    background-color: var(--mc-color-dark);
 
 }
 

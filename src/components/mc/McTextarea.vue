@@ -1,7 +1,7 @@
 <!-- MyTextarea.vue -->
 <template>
     <textarea class="mc-textarea" :value="initialValue" @input="updateValue"></textarea>
-    
+
 </template>
 
 <script setup>
@@ -18,15 +18,17 @@ const input = (e) => {
 </script>
 
 <style lang="scss" scoped>
-textarea{
-    background-color: rgb(94,94,94);
+textarea {
+    background-color: rgb(94, 94, 94);
+    outline: none;
     color: white;
-    font-size: 14px;
+    font-size: 12px;
     font-family: 'lifangti';
     padding: 8px;
     line-height: 1.2;
-    border-bottom: 2px solid white;
+    border: 2px solid var(--mc-color-black);
 }
+
 /* 
 ::-webkit-scrollbar 滚动条整体部分
 
