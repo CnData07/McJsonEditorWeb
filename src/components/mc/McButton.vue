@@ -18,21 +18,11 @@ defineProps({
         default: false
     }
 })
-
-// 如果按钮是disable的状态，那就把type = disable
-
 </script>
-
-<style lang="scss">
-:root {
-    --mc-color-def: #c6c7c9;
-    --mc-color-black: #464749;
-    --mc-color-green: #398020;
-    --mc-color-purple: #6e41dc;
-    --mc-color-red: #bd3333;
-}
+<style lang="scss" scoped>
 
 button {
+    white-space:nowrap;
     margin: 2px;
     /* box-sizing: border-box; */
     position: relative;
@@ -123,10 +113,18 @@ button {
 
 button {
     &:hover {
-        opacity: 0.8;
+        &:disabled {
+            opacity: 1;
+        }
+
+        &::after {
+            border: 2px rgb(255, 255, 255) solid;
+        }
     }
+
 }
 
+button:active,
 .active {
     padding: 9px 16px 3px 16px;
     color: white;
