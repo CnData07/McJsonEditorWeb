@@ -1,9 +1,6 @@
 <!-- MyTextarea.vue -->
 <template>
-    <textarea class="mc-textarea" :value="initialValue" @input="input">
-    
-    </textarea>
-
+    <textarea class="mc-textarea" :value="initialValue" @input="input"></textarea>
 </template>
 
 <script setup>
@@ -29,24 +26,18 @@ textarea {
     line-height: 1.2;
     border: 2px solid var(--mc-color-black);
 
-    /*定义滚动条高宽及背景
- 高宽分别对应横竖滚动条的尺寸*/
     &::-webkit-scrollbar {
         cursor: pointer;
         width: 8px;
         background-color: inherit;
     }
 
-    /*定义滚动条轨道
- 内阴影+圆角*/
     &::-webkit-scrollbar-track {
         cursor: pointer;
         border-radius: 8px;
         background-color: inherit;
     }
 
-    /*定义滑块
- 内阴影+圆角*/
     &::-webkit-scrollbar-thumb {
         cursor: pointer;
         border-radius: 0;
@@ -55,5 +46,4 @@ textarea {
     }
 
 }
-
 </style>

@@ -40,7 +40,7 @@ input:hover {
     background-color: var(--mc-color-black);
 }
 
-input:focus {
+input.edit:focus {
     padding: 4px 8px;
     background-color: var(--mc-color-black);
     border: 1px solid var(--mc-color-green);
