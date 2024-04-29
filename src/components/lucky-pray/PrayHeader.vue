@@ -29,6 +29,7 @@
         align-items: center;
 
         .title {
+            font-family: 'mcfont';
             flex: 1;
             color: white;
             font-weight: 400;

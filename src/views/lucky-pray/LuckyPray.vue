@@ -24,6 +24,29 @@
                         <McInput :value="ConfigData.broadcastLevel" />
                     </li>
                 </ul>
+                <table>
+                    <caption>
+                        奖品等级设置
+                    </caption>
+                    <tr>
+                        <th></th>
+                        <th>等级名</th>
+                        <th>等级颜色</th>
+                        <th>等级音效(无效)</th>
+                        <th>概率权重</th>
+                        <th>概率</th>
+                    </tr>
+                    <tr v-for="(listItem, index) in ConfigData.level" :key="index">
+                        <td>{{ listItem.index }}</td>
+                        <td>{{ listItem.name }}</td>
+                        <td>{{ listItem.color }}</td>
+                        <td>{{ listItem.sound }}</td>
+                        <td>{{ listItem.probability }}</td>
+                        <td>{{ (100 * listItem.probability / Object.values(ConfigData.level).map(a => a.probability).reduce((a, b) => a + b)).toFixed(2) }}%
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
             </div>
             <div class="jsonbutton">
                 <span class="left">
@@ -83,6 +106,7 @@ const defData = {
         display: flex;
         align-items: center;
         border-bottom: 1px solid var(--mc-color-def);
+
         span {
             font-size: 18px;
         }
@@ -107,23 +131,47 @@ const defData = {
             width: 100%;
             resize: none;
             height: 100%;
+        }
+    }
 
-            &::-webkit-scrollbar {
-                display: none;
+    ul {
+        padding: 1px 0;
+        display: flex;
+        flex-flow: column;
+        gap: 6px;
+
+        li {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+
+            .mc-input {
+                width: 300px;
             }
         }
     }
 
-    li {
+    table {
         width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 4px;
-        margin: 6px 0;
-        
-        .mc-input{
-            width: 300px;
+
+        caption {
+            margin: 12px 0;
+            text-align: left;
+        }
+
+        th {
+            font-weight: 400;
+            color: var(--mc-color-def);
+        }
+
+        td {
+            font-size: 14px;
+            .mc-input {
+                width: 100%;
+            }
         }
     }
 }
