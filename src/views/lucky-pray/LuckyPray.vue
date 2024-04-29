@@ -305,14 +305,14 @@ const poolSelectData = (selectedPoolKey) => {
             position: relative;
             height: 38px;
             line-height: 1.5;
-            padding: 2px 16px 4px 16px;
+            padding: 5px 10px 6px;
             font-size: 14px;
             border-radius: 0;
-            border: 2px solid var(--mc-color-black);
+            border: 1px solid var(--mc-color-green);
             margin: 0;
             color: white;
             outline: none;
-            background-color: var(--mc-color-green);
+            background-color: var(--mc-color-black);
         }
     }
 }
