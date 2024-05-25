@@ -8,7 +8,7 @@
 
             <div class="jsonbutton">
                 <span class="left">
-                    
+
                     <McButton type="purple">导入配置</McButton>
                 </span>
 
@@ -67,7 +67,7 @@
                             <McInput type="edit" v-model="listItem.probability" />
                         </td>
                         <td width="40px" style="text-align: center">{{ (listItem.probability /
-                            totalProbability).toFixed(2) }}%</td>
+                            totalProbability * 100).toFixed(2) }}%</td>
 
                     </tr>
                 </table>
@@ -77,7 +77,7 @@
             <div class="title">
                 <span>奖池配置 CardPool.json</span>
                 <div class="pool-select">
-                    <select @change="poolSelectData($event.target.value)">
+                    <select v-model="poolSelectData">
                         <option v-for="(value, key) in poolList" :key="key" :value="key">
                             <span>{{ key }}</span>
                         </option>
@@ -101,67 +101,76 @@
             </div>
 
             <div class="config">
+
+                <span class="subtitle">基础设置</span>
                 <ul>
                     <li>
                         <span>奖池名称</span>
-                        <McInput v-model="pool.name" />
+                        <McInput v-model="poolList[poolSelectData].name" />
                     </li>
                     <li>
                         <span>奖池图标</span>
-                        <McInput v-model="pool.icon" />
+                        <McInput v-model="poolList[poolSelectData].icon" />
                     </li>
                     <li>
                         <span>奖池是否启用</span>
-                        <McInput v-model="pool.enabled" />
+                        <McInput v-model="poolList[poolSelectData].enabled" />
                     </li>
                     <li>
                         <span>截止日期</span>
-                        <McInput v-model="pool.diedLine" />
+                        <McInput v-model="poolList[poolSelectData].diedLine" />
                     </li>
                     <li>
                         <span>奖池描述</span>
-                        <McInput v-model="pool.discription" />
+                        <McInput v-model="poolList[poolSelectData].discription" />
                     </li>
                     <li>
                         <span>每日最大祈愿次数</span>
-                        <McInput v-model="pool.maxPrayCountPerday" />
+                        <McInput v-model="poolList[poolSelectData].maxPrayCountPerday" />
                     </li>
                     <li>
                         <span>每日祈愿次数重置时间</span>
                         <span>
-                            <McInput style="width:50px" v-model="pool.timeOfResetPerday[0]" />
+                            <McInput style="width:50px" v-model="poolList[poolSelectData].timeOfResetPerday[0]" />
                             时
-                            <McInput style="width:50px" v-model="pool.timeOfResetPerday[1]" />
+                            <McInput style="width:50px" v-model="poolList[poolSelectData].timeOfResetPerday[1]" />
                             分
                         </span>
 
                     </li>
+                </ul>
+                <span class="subtitle">祈愿消耗物品</span>
+                <ul>
                     <li>
                         <span>抽奖图标</span>
-                        <McInput v-model="pool.prayItem.icon" />
+                        <McInput v-model="poolList[poolSelectData].prayItem.icon" />
                     </li>
                     <li>
                         <span>代币类型</span>
-                        <McInput v-model="pool.prayItem.mode" />
+                        <McInput v-model="poolList[poolSelectData].prayItem.mode" />
+                        <select v-model="poolSelectData">
+                            <option v-for="(value, key) in poolList" :key="key" :value="key">
+                                <span>{{ key }}</span>
+                            </option>
+                        </select>
                     </li>
                     <li>
                         <span>物品名称</span>
-                        <McInput v-model="pool.prayItem.name" />
+                        <McInput v-model="poolList[poolSelectData].prayItem.name" />
                     </li>
                     <li>
                         <span>标准类型</span>
-                        <McInput v-model="pool.prayItem.type" />
+                        <McInput v-model="poolList[poolSelectData].prayItem.type" />
                     </li>
                     <li>
                         <span>物品数量</span>
-                        <McInput v-model="pool.prayItem.count" />
+                        <McInput v-model="poolList[poolSelectData].prayItem.count" />
                     </li>
                     <li>
                         <span>特殊值</span>
-                        <McInput v-model="pool.prayItem.aux" />
+                        <McInput v-model="poolList[poolSelectData].prayItem.aux" />
                     </li>
                 </ul>
-
             </div>
         </div>
     </div>
@@ -177,30 +186,28 @@ import ConfigData from "@/assets/lucky-pray/v1.3.2/Config.json"
 import CardPoolData from "@/assets/lucky-pray/v1.3.2/CardPool.json"
 import { ref, computed } from 'vue'
 
-const cfg = ref(Object.assign({}, ConfigData));
-const poolList = ref({ ...CardPoolData });
-const pool = ref({ ...poolList.value[Object.keys(poolList.value)[0]] }); // 这个地方的做法对吗，它是键值对
+const cfg = ref(Object.assign({}, ConfigData))
+const poolList = ref({ ...CardPoolData })
+const poolSelectData = ref(Object.keys(poolList.value)[0])
 const totalProbability = computed(() => {
-    return cfg.value.level.reduce((sum, item) => sum + Number(item.probability), 0);
+    return cfg.value.level.reduce((sum, item) => sum + Number(item.probability), 0)
 })
-
-const poolSelectData = (selectedPoolKey) => {
-    if (selectedPoolKey in poolList.value) {
-        pool.value = { ...poolList.value[selectedPoolKey] }; // 浅拷贝选中的卡池数据  
-    } else {
-        console.error(`Pool name ${selectedPoolKey} is not found in CardPoolData.`);
-    }
-};
+const itemModeList = ["物品特殊值", "物品SNBT", "LLmoney", "计分板"]
+const itemMode = computed(() => {
+    // 待做
+})
 
 </script>
 
 
 <style lang="scss">
 .main-box {
-    width: min(120ch, 100% - 4rem);
+    width: min(140ch, 100% - 4rem);
     color: white;
     margin-inline: auto;
 }
+
+
 
 .config-box {
     display: grid;
@@ -224,6 +231,15 @@ const poolSelectData = (selectedPoolKey) => {
         span {
             font-size: 18px;
         }
+    }
+
+    .subtitle {
+        display: block;
+        box-sizing: border-box;
+        padding: 12px 0;
+        text-align: left;
+        font-weight: 700;
+        white-space: nowrap;
     }
 
     .config {
@@ -260,14 +276,26 @@ const poolSelectData = (selectedPoolKey) => {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding-left: 1.75ch;
+            box-sizing: border-box;
             gap: 4px;
             white-space: nowrap;
+
+            span {
+                line-height: 0;
+            }
+
+            &:hover {
+                background-color: #ffffff09;
+            }
 
             .mc-input {
                 width: 300px;
             }
         }
     }
+
+
 
     table {
         width: 100%;
@@ -277,6 +305,7 @@ const poolSelectData = (selectedPoolKey) => {
         caption {
             margin: 12px 0;
             text-align: left;
+            font-weight: 700;
         }
 
         tr {
