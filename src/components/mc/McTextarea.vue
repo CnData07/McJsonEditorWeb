@@ -1,18 +1,19 @@
-<!-- MyTextarea.vue -->
-<template>
-    <textarea class="mc-textarea" :value="initialValue" @input="input"></textarea>
-</template>
-
-<script setup>
-const emit = defineEmits(['update:modelValue']);
-
-const porps = defineProps({
-    initialValue: String | Number
-})
-
-const input = (e) => {
-    emit('update:modelValue', e.target.value);
-}
+<template>  
+    <textarea class="mc-textarea" :value="value" @input="updateValue"></textarea>  
+</template>  
+  
+<script setup>  
+import { defineProps, defineEmits } from 'vue';  
+  
+const emit = defineEmits(['update:modelValue']);  
+  
+const props = defineProps({  
+    value: [String, Number] // 注意这里将 prop 名称改为 value  
+});  
+  
+const updateValue = (e) => {  
+    emit('update:modelValue', e.target.value); // 当 textarea 的值变化时，通知父组件  
+};  
 
 </script>
 

@@ -97,7 +97,7 @@
 
             </div>
             <div class="json">
-                <McTextarea :value="JSON.stringify(poolList, null, 2)"></McTextarea>
+                <McTextarea :value="formattedPoolList" @update:modelValue="handleTextareaUpdate"></McTextarea>
             </div>
 
             <div class="config">
@@ -139,20 +139,39 @@
 
                     </li>
                 </ul>
+                <table>
+                    <caption>
+                        抽奖连抽模式
+                    </caption>
+                    <tr>
+                        <th width="30px"></th>
+                        <th width="100px">抽奖名称</th>
+                        <th width="100px">抽奖次数</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr v-for="(val, key, index) in poolList[poolSelectData].prayMode" :key="key">
+                        <td style="text-align: center">
+                            {{ index + 1 }}
+                        </td>
+                        <td>
+                            {{ key }}
+                        </td>
+                        <td>
+                            <McInput type="edit" v-model="poolList[poolSelectData].prayMode[key]" />
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
                 <span class="subtitle">祈愿消耗物品</span>
                 <ul>
                     <li>
-                        <span>抽奖图标</span>
+                        <span>物品图标</span>
                         <McInput v-model="poolList[poolSelectData].prayItem.icon" />
                     </li>
                     <li>
                         <span>代币类型</span>
                         <McInput v-model="poolList[poolSelectData].prayItem.mode" />
-                        <select v-model="poolSelectData">
-                            <option v-for="(value, key) in poolList" :key="key" :value="key">
-                                <span>{{ key }}</span>
-                            </option>
-                        </select>
                     </li>
                     <li>
                         <span>物品名称</span>
@@ -192,17 +211,28 @@ const poolSelectData = ref(Object.keys(poolList.value)[0])
 const totalProbability = computed(() => {
     return cfg.value.level.reduce((sum, item) => sum + Number(item.probability), 0)
 })
-const itemModeList = ["物品特殊值", "物品SNBT", "LLmoney", "计分板"]
-const itemMode = computed(() => {
-    // 待做
+const formattedPoolList = computed(() => {
+    return JSON.stringify(poolList.value, null, 2)
 })
+function handleTextareaUpdate(newValue) {
+    try {
+        // 尝试将新值解析回原始数据结构  
+        const parsedValue = JSON.parse(newValue)
+        // 在这里，你可能需要执行一些验证和逻辑来确保 parsedValue 符合 poolList 的结构  
+        // 如果解析和验证成功，则更新 poolList  
+        poolList.value = parsedValue
+    } catch (error) {
+        // 处理解析错误，比如显示错误消息给用户  
+        console.error('无法解析 textarea 中的内容:', error)
+    }
+}
 
 </script>
 
 
 <style lang="scss">
 .main-box {
-    width: min(140ch, 100% - 4rem);
+    width: var(--main-width);
     color: white;
     margin-inline: auto;
 }
@@ -300,7 +330,7 @@ const itemMode = computed(() => {
     table {
         width: 100%;
         border-collapse: separate;
-        border-spacing: 6px;
+        border-spacing: 0;
 
         caption {
             margin: 12px 0;
@@ -310,17 +340,23 @@ const itemMode = computed(() => {
 
         tr {
             th {
+                padding: 3px;
                 text-align: left;
                 font-weight: 400;
                 color: var(--mc-color-def);
             }
 
             td {
+                padding: 3px;
                 font-size: 14px;
 
                 .mc-input {
                     width: 100%;
                 }
+            }
+
+            &:hover {
+                background-color: #ffffff09;
             }
         }
 
@@ -345,6 +381,7 @@ const itemMode = computed(() => {
         }
     }
 }
+
 
 .config-json {
     ul {

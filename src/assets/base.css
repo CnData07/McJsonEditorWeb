@@ -7,5 +7,5 @@
   --mc-color-red: #bd3333;
   --mc-color-black: #1e1e1e;
 
-  --main-width: min(120ch, 100% - 4rem);
+  --main-width: min(140ch, 100% - 4rem);;
 }
